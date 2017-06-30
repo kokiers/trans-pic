@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>trans-pic</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"> 
+    <style>
+        * {-webkit-backface-visibility: hidden;margin:0;padding:0; }
+        *{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+        ul li{list-style: none;}
+        html,body,menu,ul,ol,li,p,div,form,h1,h2,h3,h4,h5,h6,img,a img,input,textarea,fieldset{padding:0;margin:0;border:0;}
+        h1,h2,h3,h4,h5{font-weight:normal;}
+        a{color:#333;text-decoration:none;}
+        a:hover{text-decoration:none;}
+        a,img,i,span,li,div{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;}
+        .picb{display: block;width: 100%;}
+        #pjhy{background: url(static/jhy.jpg) no-repeat;background-size:100% 100%; width: 100%;height: 100%;overflow: hidden;position: relative;}
+        #pjhy .sline{white-space: nowrap;margin-top: 300px;}
+        .sline a{display: inline-block;vertical-align: top;text-align: center;color: #fff;opacity: .6;}
+        .sline a img{display: inline-block;width: 85%;}
+        .sline a.act{opacity: 1}
+    </style>
+</head>
+<body>
+    <div id='pjhy'>
+        <div class="sline" id="line">
+        <a  href="javascript:void(0)" >
+            <img src="static/luban1.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban2.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban3.jpg" class="picb">
+        </a><a href="javascript:void(0)" >
+            <img src="static/luban4.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban5.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban6.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban7.jpg" class="picb">
+        </a><a href="javascript:void(0)" >
+            <img src="static/luban8.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban9.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban10.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban1.jpg" class="picb">
+        </a><a  href="javascript:void(0)" >
+            <img src="static/luban2.jpg" class="picb">
+        </a></div>       
+    </div>
+
+<script type="text/javascript">
+window.onload = function () {
+    
+    var $width = document.body.offsetWidth,
+        $height = window.screen.availHeight ,
+        startX, moveEndX,  X,index = 1, 
+        awrap = document.getElementById('pjhy'),
+        aline = document.getElementById('line'),
+        abj = document.getElementsByTagName('a'),
+        aTotal = abj.length;
+    window.isAni = false;
+
+    $row = parseInt($width/2);
+
+    aline.style.width = $width + 'px';
+    awrap.style.height = $height + 'px';
+
+    abj[index].style.opacity = 1; 
+
+    for (var i =0,alen = abj.length; i < alen; i++) {
+        abj[i].style.width = $row + 'px';           
+    }
+
+    aline.style.marginLeft = '-'+ parseInt($row/2) +'px'
+    
+    aline.addEventListener("touchstart", function(e) {
+
+        startX = event.targetTouches[0].pageX;        
+
+    });
+
+    aline.addEventListener("touchmove", function(e) {
+        e.preventDefault();
+        moveEndX = e.targetTouches[0].pageX;       
+        X = moveEndX - startX;
+        
+        if (window.isAni == true){
+            return false;
+        }
+        window.isAni = true;
+        var newNum = 0;
+        if ( Math.abs(X) > 0 && X > 0 ) {
+
+            index --;
+
+            if(index == 0){
+                setTimeout(function () {
+                    
+                    aline.style.transition = ''
+                    index =parseInt(aTotal) -2;
+                    newNum =  -(index*$row -$row/2);
+                    aline.style.marginLeft =  newNum +'px';                                         
+                },400)
+            }
+
+            newNum =  -(index*$row -$row/2);
+
+        }else if ( Math.abs(X) > 0 && X < 0 ) {
+
+            index ++;
+
+            if(index == parseInt(aTotal) -1){ 
+                setTimeout(function () {
+                    aline.style.transition = ''
+                    index =1;
+                    newNum =  -(index*$row -$row/2);
+                    aline.style.marginLeft = newNum +'px';                  
+                },400)
+            }
+            newNum =  -(index*$row -$row/2);
+        }
+       
+         for (var i =0,alen = abj.length; i < alen; i++) {
+            if (index === i) {
+                abj[i].style.opacity = 1; 
+            }else{
+                abj[i].style.opacity = 0.6; 
+            }
+            abj[i].style.width = $row + 'px';           
+        }
+        aline.style.transition = 'margin-left 400ms linear';
+        aline.style.marginLeft =  newNum +'px';                
+    });
+
+    aline.addEventListener("touchend", function(e) {
+        window.isAni = false;
+    }); 
+}
+</script>
+</body>
+</html>
