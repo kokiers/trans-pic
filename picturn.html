@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>Document</title>
+</head>
+<style type="text/css">
+*{margin:0;padding:0;}
+a {color:#333;text-decoration:none;} 
+a:hover {text-decoration:none;}
+.clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden}
+.clearfix{zoom:1}
+.tag-banner { overflow: hidden; width: 100%;position: relative; height: 100px  }
+.tag-li { display: inline-block; width: 100%; height: 100px; font-size: 12px;}
+.tag { position: absolute; top: 0; left: 0px;  font-size: 0; }
+.tag .tag-li:nth-child(odd){
+    background: yellow
+}
+.tag .tag-li:nth-child(even){
+    background: orange
+}
+</style>
+<body>
+    <div class="tag-banner clearfix">
+        <div class="tag clearfix" id="tag" style='left:0px'>
+            <a href="javascript:void(0)" class="tag-li" > 1               
+            </a>
+            <a href="javascript:void(0)" class="tag-li" > 2              
+            </a>
+             <a href="javascript:void(0)" class="tag-li" > 3               
+            </a>
+            <a href="javascript:void(0)" class="tag-li" > 4              
+            </a>
+        </div>
+    </div>
+    <script>
+    window.onload = function (){          
+        var tag = document.getElementById('tag'),
+            $width = document.body.offsetWidth,
+            $scrollLeft;
+        var startX, moveEndX, X, basicX, $nums, xEnd, lastX, $length = 3 || 0;
+
+        var tagli = tag.children;
+            
+        for(var i=0,taglen = tagli.length;i<taglen;i++){
+            tagli[i].style.width = $width + 'px';
+        }
+        
+        tag.addEventListener("touchstart", function(e) {
+            startX = e.touches[0].pageX;    
+            basicX = parseInt(tag.style.left.replace(/px/g,''));
+        },false);
+
+        tag.addEventListener("touchmove", function(e) {
+            e.preventDefault();
+            moveEndX = e.touches[0].pageX;
+            X = moveEndX - startX;
+            $nums = basicX + X;                             
+            if ($nums < 0 && ($nums > -($width * $length))) {
+                tag.style.left = $nums + 'px';                    
+            } else {
+                return
+            }
+        },false);
+        tag.addEventListener("touchend", function(e) {                
+            xEnd = Math.abs(tag.style.left.replace(/px/g,''));                
+            var xx, yy, zz, index;
+            for (var i = 0; i <= $length; i++) {
+                xx = $width * i / 2, yy = i * $width, zz = $width * (1 + i * 2) / 2;
+                if (((xEnd >= xx) && (xEnd <= yy)) || ((xEnd >= yy) && (xEnd <= zz))) {
+                    lastX = i * $width;
+                    index = i;
+                    break;
+                }
+            }
+            setTimeout(function() {
+                tag.style.left = -lastX + 'px';                    
+            }, 100)
+        },false)
+    } 
+    </script>
+</body>
+
+</html>
